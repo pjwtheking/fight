@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.eric.accbooks.dao.DailyAccountDao" >
+  
+  <select id="queryDailyAccount" resultType="com.eric.accbooks.dto.response.DailyAccountResponse" 
+  		parameterType="com.eric.accbooks.dto.request.DailyAccountRequest">
+    SELECT daily.dailyId, accType.accbookTypeName, daily.keeperCode, keeper.keeperName, 
+		daily.itemTypeCode, daily.accbookTypeCode, itemType.itemTypeName, daily.amount, 
+		daily.remark, daily.createtime
+	FROM accbook_daily daily 
+	LEFT JOIN accbook_keeper keeper ON daily.keeperCode = keeper.keeperCode
+  	LEFT JOIN accbook_item_type itemType ON daily.itemTypeCode = itemType.itemTypeCode
+	LEFT JOIN accbook_type accType ON daily.accbookTypeCode = accType.accbookTypeCode
+		WHERE daily.createtime = #{createtime}
+  </select>
+  
+  <select id="selectPage" resultType="com.eric.accbooks.dto.response.DailyAccountResponse" 
+  		parameterType="com.eric.accbooks.dto.request.Page">
+    SELECT daily.dailyId, accType.accbookTypeName, daily.keeperCode, keeper.keeperName, 
+			daily.itemTypeCode, daily.accbookTypeCode, itemType.itemTypeName, daily.amount, 
+			daily.remark, daily.createtime 
+		FROM accbook_daily daily 
+	LEFT JOIN accbook_keeper keeper ON daily.keeperCode = keeper.keeperCode
+  LEFT JOIN accbook_item_type itemType ON daily.itemTypeCode = itemType.itemTypeCode
+	LEFT JOIN accbook_type accType ON daily.accbookTypeCode = accType.accbookTypeCode
+    limit #{start},#{pageSize}
+  </select>
+  <select id="selectCount" resultType="int">
+    SELECT count(*) FROM accbook_daily daily 
+	LEFT JOIN accbook_keeper keeper ON daily.keeperCode = keeper.keeperCode
+  LEFT JOIN accbook_item_type itemType ON daily.itemTypeCode = itemType.itemTypeCode
+	LEFT JOIN accbook_type accType ON daily.accbookTypeCode = accType.accbookTypeCode
+  </select>
+  
+  <insert id="insert" parameterType="com.eric.accbooks.dto.request.DailyAccountRequest" useGeneratedKeys="true" keyProperty="dailyId">
+    insert into accbook_daily VALUES (
+    	null, #{accbookTypeCode}, #{keeperCode}, #{itemTypeCode}, #{amount}, #{remark}, SYSDATE(), SYSDATE());
+  </insert>
+
+  <!-- <resultMap id="userResultMap" type="com.fangcang.titanjr.dto.bean.UserInfoDTO">
+    <result property="tfsUserId" column="tfsuserid" />
+    <result property="userId" column="userid" />
+    <result property="orgCode" column="orgcode" />
+    <result property="userName" column="username" />
+    <result property="userLoginName" column="userloginname" />
+    <result property="password" column="password" />
+    <result property="department" column="department" />
+    <result property="mobilePhone" column="mobilephone" />
+    <result property="email" column="email" />
+    <result property="merchantCode" column="merchantcode" />
+    <result property="payPassword" column="paypassword" />
+    <result property="paySalt" column="paysalt" />
+    <result property="status" column="status" />
+    <result property="isAdmin" column="isadmin" />
+    <result property="isOperator" column="isoperator" />
+    <result property="creator" column="creator" />
+    <result property="createTime" column="createtime" />
+
+    <association property="userBindInfoDTO" javaType="com.fangcang.titanjr.dto.bean.UserBindInfoDTO">
+      <result property="fcUserId" column="fcuserid" />
+      <result property="userName" column="username" />
+      <result property="loginName" column="loginname" />
+      <result property="fcUserName" column="fcusername" />
+      <result property="fcLoginName" column="fcloginname" />
+      <result property="merchantCode" column="bmerchant" />
+      <result property="isActive" column="isactive" />
+    </association>
+
+    <collection property="roleDTOList" ofType="com.fangcang.titanjr.dto.bean.RoleDTO">
+      <result property="roleId" column="roleid" />
+      <result property="roleCode" column="rolecode" />
+      <result property="fcRoleId" column="fcroleid" />
+      <result property="roleName" column="rolename" />
+      <result property="roleRemark" column="roleremark" />
+      <result property="isActive" column="roleactive" />
+    </collection>
+  </resultMap> -->
+  
+</mapper>

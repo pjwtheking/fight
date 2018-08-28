@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.eric.org</groupId>
+    <artifactId>project_supper</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>com.eric.accbooks</groupId>
+  <artifactId>accountbook</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>accountbook Maven Webapp</name>
+  
+  <url>http://maven.apache.org</url>
+  <dependencies>
+	  	<dependency>
+	        <groupId>com.eric.org</groupId>
+	        <artifactId>common-api</artifactId>
+	        <version>0.0.1-SNAPSHOT</version>
+	    </dependency>
+	    <dependency>
+	        <groupId>com.eric.org</groupId>
+	        <artifactId>accountbook-api</artifactId>
+	        <version>0.0.1-SNAPSHOT</version>
+	    </dependency>
+		<!-- dubbo 去掉dubbo的spring依赖，不然会冲突 -->
+		<dependency>
+		  <groupId>com.alibaba</groupId>
+		  <artifactId>dubbo</artifactId>
+		  <exclusions>
+			<exclusion>
+				<artifactId>spring</artifactId>
+				<groupId>org.springframework</groupId>
+			</exclusion>
+		  </exclusions>
+		  <version>2.5.3</version>
+		</dependency>
+		<!-- zkclient  -->
+		<dependency>
+		  <groupId>com.github.sgroschupf</groupId>
+		  <artifactId>zkclient</artifactId>
+		  <version>0.1</version>
+		</dependency>
+		<!--  zookeeper -->
+		<dependency>
+		  <groupId>org.apache.zookeeper</groupId>
+		  <artifactId>zookeeper</artifactId>
+		  <version>3.3.6</version>
+		</dependency>
+  </dependencies>
+  
+  <build>
+    <finalName>accountbook</finalName>
+    <plugins>
+		<!-- define the project compile level -->
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>2.3.2</version>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+			</configuration>
+		</plugin>
+	</plugins>
+  </build>
+  
+</project>

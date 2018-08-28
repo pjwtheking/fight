@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/jee
+		http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.1.xsd"
+	default-lazy-init="true">
+	
+	<!-- JNDI 数据源 -->
+	<!-- <jee:jndi-lookup id="myDataSource" jndi-name="jdbc/account_book" /> -->
+	
+	<!-- dataSource -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+	    <property name="driverClassName" value="${db.driverClassName}" /> 
+	    <property name="url" value="${db.url}" /> 
+	    <property name="username" value="${db.username}" /> 
+	    <property name="password" value="${db.password}" /> 
+	    <property name="maxActive" value="${db.maxActive}" /> 
+	    <property name="initialSize" value="${db.initialSize}" /> 
+	    <property name="maxWait" value="${db.maxWait}" /> 
+	    <property name="minIdle" value="${db.minIdle}" /> 
+	    <property name="timeBetweenEvictionRunsMillis" value="${db.timeBetweenEvictionRunsMillis}" /> 
+	    <property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}" /> 
+	    <property name="maxOpenPreparedStatements" value="${db.maxOpenPreparedStatements}" /> 
+	    <property name="removeAbandoned" value="${db.removeAbandoned}" /> 
+	    <property name="removeAbandonedTimeout" value="${db.removeAbandonedTimeout}" /> 
+	    <property name="logAbandoned" value="${db.logAbandoned}" /> 
+    </bean>
+    <!-- <bean id="configDataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		  destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@192.168.2.35:1521:fangcangdb" />
+		<property name="username" value="config" />
+		<property name="password" value="config" />
+		<property name="password" value="iebb3gh5" />
+	</bean> -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"></property>
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 通过sqlSessionFactory为指定包下的类或接口创建bean （session.getDMapper(XxxDao.Class)）-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.eric.accbooks.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+	
+	<!-- 事务管理器-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 定义事务增强处理 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	   <tx:attributes>
+	     <tx:method name="do*" propagation="REQUIRED"/>
+	     <tx:method name="add*" propagation="REQUIRED"/>
+	     <tx:method name="save*" propagation="REQUIRED"/>
+	     <tx:method name="del*" propagation="REQUIRED"/>
+	     <tx:method name="edit*" propagation="REQUIRED"/>
+	     <tx:method name="update*" propagation="REQUIRED"/>
+	     <tx:method name="find*" propagation="REQUIRED" read-only="true"/>
+	     <tx:method name="select*" propagation="REQUIRED" read-only="true"/>
+	     <tx:method name="query*" propagation="REQUIRED" read-only="true"/>
+	   </tx:attributes>
+	</tx:advice>
+	<!-- aop定义事务增强 -->
+	<aop:config>
+	   <!-- 定义切点 -->
+	   <aop:pointcut id="servicePointcut"
+	       expression="execution(* com.eric.accbooks.services.impl.*.*(..))" />
+	   <!-- 为切点增加事物增强 -->
+	   <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePointcut"/>    
+	</aop:config>
+	
+	<!-- 开启事物注解 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+	<!-- 使用 spring JDBC 模板 -->
+	<!-- <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean> -->
+	
+	
+</beans>

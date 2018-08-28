@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd" default-autowire="byName">
+	
+	<context:component-scan base-package="com.eric.accbooks.services"></context:component-scan>
+
+	<dubbo:application name="accountbook_server_provider" />
+	<dubbo:registry  protocol="zookeeper"  address="127.0.0.1:2181"  />
+   	<dubbo:protocol name="dubbo" port="20880" />     
+   	
+	<dubbo:service interface="com.eric.accbooks.api.DailyAccountService" ref="dailyAccountService" timeout="3000" />
+	
+</beans>
