@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.eric.accbooks.dto.request.DailyAccountRequest;
 import com.eric.accbooks.dto.response.DailyAccountResponse;
-import com.eric.comm.apps.DubboAppService;
+import com.eric.comm.service.DubboAppService;
 import com.eric.common.util.DateUtils;
 
 /** 
@@ -30,10 +30,10 @@ import com.eric.common.util.DateUtils;
  * @date 2018年8月22日 下午6:03:20  
  */
 @Controller
-@RequestMapping("/comm")
-public class CommonController {
+@RequestMapping("/dubbo")
+public class DubboTestController {
 	
-	private final static Logger logger = LoggerFactory.getLogger(CommonController.class);
+	private final static Logger logger = LoggerFactory.getLogger(DubboTestController.class);
 	
 	@Resource
 	private DubboAppService dubboAppService;

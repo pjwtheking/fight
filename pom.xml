@@ -20,6 +20,7 @@
     <module>redis-api</module>
     <module>commtest-app</module>
     <module>accountbook-api</module>
+    <module>springboot</module>
   </modules>
 
   <dependencies>

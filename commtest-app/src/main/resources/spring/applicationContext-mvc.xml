@@ -13,7 +13,6 @@
 	default-lazy-init="true">
 
 	<!-- 静态资源映射 -->
-	<!-- <mvc:resources location="/image/" mapping="/image/**"></mvc:resources> -->
 
 	<!-- mvc注解扫描 -->
 	<context:component-scan base-package="com.eric.comm"></context:component-scan>

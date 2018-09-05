@@ -5,7 +5,7 @@
  * @author Eric
  * @date 2018年8月22日 下午5:59:35  
  */
-package com.eric.comm.apps.impl;
+package com.eric.comm.service.impl;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.eric.accbooks.api.DailyAccountService;
 import com.eric.accbooks.dto.request.DailyAccountRequest;
 import com.eric.accbooks.dto.response.DailyAccountResponse;
-import com.eric.comm.apps.DubboAppService;
+import com.eric.comm.service.DubboAppService;
 
 /** 
  * @Description: TODO

@@ -5,7 +5,7 @@
  * @author Eric
  * @date 2018年8月21日 上午12:40:54  
  */
-package com.eric.comm.apps;
+package com.eric.comm.service;
 
 import java.util.List;
 
